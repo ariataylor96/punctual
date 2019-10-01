@@ -1,3 +1,4 @@
+from colorama import Fore, Style
 from contextlib import contextmanager
 import click
 import os
@@ -34,3 +35,22 @@ def check_directory():
     if not os.path.lexists(root_package_dir):
         click.echo(f'{root_package_dir} does not exist. Exiting with error.')
         sys.exit(1)
+
+
+def print_status_output(text, color=''):
+    def inner():
+        click.echo(f'{color}{Style.BRIGHT}{text}{Style.RESET_ALL}')
+
+    return inner
+
+
+def logs(text):
+    return print_status_output(text, color=Fore.GREEN)
+
+
+def loge(text):
+    return print_status_output(text, color=Fore.RED)
+
+
+def log(text):
+    return print_status_output(text)

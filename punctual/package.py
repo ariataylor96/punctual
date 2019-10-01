@@ -1,7 +1,9 @@
+from colorama import Fore, Style
 import json
+import os
 from subprocess import run
 
-from .utils import use_dir, root_package_dir, join
+from .utils import use_dir, root_package_dir, join, logs, log
 from .link import Link
 
 
@@ -15,6 +17,7 @@ class Package:
 
     def __init__(self, package_name, force=False):
         self.package_dir = join(root_package_dir, package_name)
+        self.name = os.path.basename(package_name)
         package_config = {}
 
         with use_dir(self.package_dir):
@@ -32,11 +35,11 @@ class Package:
             ]
 
             self.hooks = {
-                'pre_install': None,
-                'post_install': None,
+                'pre_install': log(f'Initiating install of {self.name}'),
+                'post_install': logs(f'Installed {self.name}'),
 
-                'pre_delete': None,
-                'post_delete': None,
+                'pre_delete': log(f'Initiating deletion of {self.name}'),
+                'post_delete': logs(f'Deleted {self.name}'),
             }
 
             self.hooks.update(package_config.get('hooks', {}))
@@ -46,8 +49,21 @@ class Package:
     def _call_hook(self, name):
         hook = self.hooks[name]
 
-        if hook:
+        if callable(hook):
+            hook()
+        elif isinstance(hook, str):
             run(hook, shell=True)
+
+    @property
+    def installed(self):
+        return all([link.exists for link in self.links])
+
+    @property
+    def status_text(self):
+        if self.installed:
+            return f'{Fore.GREEN}{Style.BRIGHT}installed{Style.RESET_ALL}'
+
+        return f'{Fore.RED}{Style.BRIGHT}not installed{Style.RESET_ALL}'
 
     def install(self):
         """

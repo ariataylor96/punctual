@@ -1,3 +1,4 @@
+from colorama import Fore, Style
 import click
 
 from .utils import check_directory
@@ -22,3 +23,22 @@ def install(package_name, force):
 def delete(package_name):
     check_directory()
     Package(package_name).delete()
+
+
+@cli.command()
+def list():
+    names = []
+    statuses = []
+
+    longest_name = 0
+    for package in Package('.').sub_packages:
+        if len(package.name) > longest_name:
+            longest_name = len(package.name)
+
+        names.append(
+            f'{Fore.BLUE}{Style.BRIGHT}{package.name}{Style.RESET_ALL}',
+        )
+        statuses.append(package.status_text)
+
+    for name, status in zip(names, statuses):
+        click.echo(f'{name.ljust(longest_name)} -> {status}')
