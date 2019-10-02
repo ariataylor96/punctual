@@ -6,6 +6,10 @@
 punctual documentation
 ======================
 
+`View project on github <https://github.com/markrawls/punctual>`_
+
+`punctual` is an uncomplicated dotfile manager that works on common Linux fundamentals and simplistic JSON configuration files.
+
 .. toctree::
    :caption: Contents:
 
