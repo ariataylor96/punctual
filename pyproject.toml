@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "punctual"
-version = "0.1.4"
-description = "Clean and simple docfile management with a lot of flexibility"
+version = "0.1.5"
+description = "Clean and simple dotfile management with a lot of flexibility"
 authors = ["Mark Rawls <markrawls96@gmail.com>"]
 
 readme = 'README.rst'
