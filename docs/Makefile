@@ -22,3 +22,4 @@ help:
 redoc: clean
 	rm -rf modules/*
 	sphinx-apidoc -o modules ../punctual/
+	make html

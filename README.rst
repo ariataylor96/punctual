@@ -44,4 +44,4 @@ Install::
 Documentation
 -------------
 
-Coming soon!
+`Available on ReadTheDocs! <https://punctual.readthedocs.io/>`_
