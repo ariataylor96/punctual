@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "punctual"
-version = "0.1.5"
+version = "0.1.6"
 description = "Clean and simple dotfile management with a lot of flexibility"
 authors = ["Mark Rawls <markrawls96@gmail.com>"]
 
 readme = 'README.rst'
+documentation = 'https://punctual.readthedocs.io/'
 
 [tool.poetry.dependencies]
 python = "^3.7"
