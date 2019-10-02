@@ -44,13 +44,15 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 autodoc_default_options = {
-    'members': True,
-    'no-imported-members': True,
-    'no-inherited': True,
-    'no-inherited-members': True,
-    'no-undoc-members': True,
-    'show-inheritance': True,
+    'members': None,
+    'no-imported-members': None,
+    'no-inherited': None,
+    'no-inherited-members': None,
+    'no-undoc-members': None,
+    'show-inheritance': None,
 }
+
+master_doc = 'index'
 
 
 # -- Options for HTML output -------------------------------------------------
