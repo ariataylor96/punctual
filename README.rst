@@ -8,7 +8,7 @@ Installation
 ------------
 
 
-With pip::
+From `PyPi <https://pypi.org/project/punctual/>`_, with pip::
 
   pip install punctual
 

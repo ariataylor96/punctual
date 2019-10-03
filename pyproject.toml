@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "punctual"
-version = "1.0.1"
+version = "1.0.2"
 description = "Clean and simple dotfile management with a lot of flexibility"
 authors = ["Mark Rawls <markrawls96@gmail.com>"]
 
