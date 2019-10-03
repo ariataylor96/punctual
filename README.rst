@@ -12,7 +12,7 @@ From `PyPi <https://pypi.org/project/punctual/>`_, with pip::
 
   pip install punctual
 
-With this you will have an executable named `pcl`.
+With this you will have an executable named ``pcl``.
 
 
 Usage
