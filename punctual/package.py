@@ -17,7 +17,9 @@ class Package:
 
     def __init__(self, package_name, force=False):
         self.package_dir = join(root_package_dir, package_name)
+        self.package_name = package_name
         self.name = os.path.basename(package_name)
+        self.force = force
         package_config = {}
 
         with use_dir(self.package_dir):
@@ -28,11 +30,13 @@ class Package:
                 Link(src, dest)
                 for src, dest in package_config.get('links', {}).items()
             ]
+            self._autolink(package_config)
 
             self.sub_packages = [
                 Package(join(package_name, sub_package_name), force=force)
                 for sub_package_name in package_config.get('packages', [])
             ]
+            self._autodiscover_packages(package_config)
 
             self.hooks = {
                 'pre_install': log(f'Initiating install of {self.name}'),
@@ -53,6 +57,36 @@ class Package:
             hook()
         elif isinstance(hook, str):
             run(hook, shell=True)
+
+    def _in_existing_links(self, name):
+        existing_links = set([l.src for l in self.links])
+
+        return name in existing_links
+
+    def _autodiscover_packages(self, package_config):
+        if not package_config.get('autodiscover', False):
+            return
+
+        sub_packages = [
+            Package(join(self.package_name, f.name), force=self.force)
+            for f in os.scandir()
+            if f.is_dir() and not f.name.startswith('.') and
+            not self._in_existing_links(f.name)
+        ]
+
+        self.sub_packages += sub_packages
+
+    def _autolink(self, package_config):
+        if not package_config.get('autolink', False):
+            return
+
+        links = [
+            Link(f.name, join(os.path.expanduser('~/'), f.name))
+            for f in os.scandir()
+            if f.name != 'config.json' and not self._in_existing_links(f.name)
+        ]
+
+        self.links += links
 
     @property
     def installed(self):
