@@ -26,6 +26,8 @@ class Package:
             with open('config.json', 'r') as f:
                 package_config = json.load(f)
 
+            self.include_hidden = package_config.get('includeHidden', False)
+
             self.links = [
                 Link(src, dest)
                 for src, dest in package_config.get('links', {}).items()
@@ -67,11 +69,23 @@ class Package:
         if not package_config.get('autodiscover', False):
             return
 
+        def _is_sub_package(f):
+            if not f.is_dir():
+                return False
+
+            if f.name.startswith('.') and not self.include_hidden:
+                return False
+
+            if self._in_existing_links(f.name):
+                return False
+
+            with use_dir(f.name):
+                return 'config.json' in [g.name for g in os.scandir()]
+
         sub_packages = [
             Package(join(self.package_name, f.name), force=self.force)
             for f in os.scandir()
-            if f.is_dir() and not f.name.startswith('.') and
-            not self._in_existing_links(f.name)
+            if _is_sub_package(f)
         ]
 
         self.sub_packages += sub_packages
