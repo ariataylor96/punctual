@@ -1,4 +1,5 @@
 import os
+import shutil
 
 
 class Link:
@@ -25,7 +26,10 @@ class Link:
         Remove the specified link.
         """
 
-        os.remove(self.dest)
+        if os.path.isdir(self.dest):
+            shutil.rmtree(self.dest)
+        else:
+            os.remove(self.dest)
 
     def install(self, force=False):
         """
